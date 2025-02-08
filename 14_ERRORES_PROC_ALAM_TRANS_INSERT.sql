@@ -1,14 +1,67 @@
-/*
+﻿/*
 PROCEDIMIENTOS ALMACENADOS TRANSACCIONALES
 Un proceso almacenado transaccional en SQL Server 2022 es un conjunto de instrucciones 
 SQL que se agrupan y se almacenan en la base de datos.
 
-Estos procesos se pueden ejecutar en respuesta a una llamada desde una aplicaci�n
+Estos procesos se pueden ejecutar en respuesta a una llamada desde una aplicación
 o desde otro procedimiento almacenado.
 
-La caracter�stica clave de un proceso almacenado transaccional es que puede 
+La característica clave de un proceso almacenado transaccional es que puede 
 manejar transacciones, lo que significa que puede asegurar la atomicidad, 
 consistencia, aislamiento y durabilidad (ACID) de las operaciones que realiza.
+---------------------------------------------------------------------------------------------
+Los procedimientos almacenados transaccionales en SQL Server son procedimientos 
+almacenados que incluyen operaciones dentro de una transacción, asegurando que todas 
+las instrucciones SQL dentro de ellos se ejecuten de manera atómica. Esto significa que 
+se cumplen las propiedades ACID (Atomicidad, Consistencia, Aislamiento y Durabilidad).
+
+🔹 Características principales:
+Atomicidad: Todas las operaciones dentro de la transacción se ejecutan completamente o 
+ninguna se ejecuta si ocurre un error.
+Consistencia: Mantienen la integridad de los datos en la base de datos.
+Aislamiento: Permiten que las transacciones concurrentes no interfieran entre sí.
+Durabilidad: Los cambios realizados en una transacción confirmada se guardan permanentemente.
+
+Ejemplo de un procedimiento almacenado transaccional:
+CREATE PROCEDURE InsertarOrden 
+    @ClienteID INT, 
+    @ProductoID INT, 
+    @Cantidad INT
+AS
+BEGIN
+    BEGIN TRANSACTION;
+    BEGIN TRY
+        -- Insertar una nueva orden
+        INSERT INTO Ordenes (ClienteID, Fecha)
+        VALUES (@ClienteID, GETDATE());
+
+        -- Obtener el ID de la orden recién insertada
+        DECLARE @OrdenID INT = SCOPE_IDENTITY();
+
+        -- Insertar los detalles de la orden
+        INSERT INTO OrdenDetalles (OrdenID, ProductoID, Cantidad)
+        VALUES (@OrdenID, @ProductoID, @Cantidad);
+
+        -- Confirmar la transacción
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        -- Si ocurre un error, deshacer la transacción
+        ROLLBACK TRANSACTION;
+        PRINT 'Error en la transacción: ' + ERROR_MESSAGE();
+    END CATCH
+END;
+
+🔹 Explicación:
+BEGIN TRANSACTION; → Inicia la transacción.
+BEGIN TRY ... END TRY → Ejecuta las operaciones dentro de un bloque de control de errores.
+COMMIT TRANSACTION; → Si todo sale bien, confirma los cambios.
+BEGIN CATCH ... END CATCH → Si ocurre un error, se ejecuta el ROLLBACK TRANSACTION para deshacer 
+							cualquier cambio realizado.
+ERROR_MESSAGE(); → Muestra el mensaje del error en caso de fallo.
+
+Este tipo de procedimientos es muy útil en sistemas donde la integridad de los datos es crucial, 
+como en sistemas bancarios, gestión de inventarios o e-commerce.
 */
 
 USE Northwind
@@ -70,7 +123,7 @@ BEGIN
         END
         IF @Estado != 0
         BEGIN
-            SET @strError = 'No puedes vender este producto porque est� descontinuado';
+            SET @strError = 'No puedes vender este producto porque está descontinuado';
             THROW 50003, @strError, 1
         END
         IF @Quantity > @Stock
