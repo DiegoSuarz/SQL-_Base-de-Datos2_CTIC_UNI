@@ -102,11 +102,11 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    DECLARE @Id_de_pedido                int
-    DECLARE @Id_de_producto                int
-    DECLARE @Cantidad                    decimal(18,4)
-    DECLARE @Precio                        money
-    DECLARE @Descuento                    float
+    DECLARE @Id_de_pedido				int
+    DECLARE @Id_de_producto				int
+    DECLARE @Cantidad                   decimal(18,4)
+    DECLARE @Precio                     money
+    DECLARE @Descuento                  float
     DECLARE @Fecha_de_asignacion        datetime
 
     SELECT
@@ -116,7 +116,7 @@ BEGIN
         ,@Precio = [Precio]
         ,@Descuento = [Descuento]
         ,@Fecha_de_asignacion = [Fecha de asignación]
-    FROM INSERTED
+    FROM INSERTED --Es una tabla virtual que SQL Server proporciona dentro de los triggers para almacenar los valores nuevos insertados en una tabla específica.
 
     DECLARE @Costo_estandar        money
     DECLARE @Precio_listado        money
@@ -194,7 +194,7 @@ BEGIN
     )
 
     UPDATE [Ventas].[Detalles de pedido]
-    SET [Id de inventario]=SCOPE_IDENTITY()
+    SET [Id de inventario]=SCOPE_IDENTITY() --es una función en SQL Server que devuelve el último valor de identidad (IDENTITY) generado en el mismo ámbito de ejecución.
     FROM [Ventas].[Detalles de pedido] d
     INNER JOIN INSERTED i
     ON
@@ -204,11 +204,16 @@ BEGIN
 
 END
 GO
+
+
+
+
 ------------------------------------------------------------------
+--CODIGO DE PRUEBA:
 USE [NorthwindSQL]
 GO
 
-DECLARE @Id_de_pedido	INT = 31;
+DECLARE @Id_de_pedido	INT = 31; 
 --DECLARE @Id				INT = 1;
 DECLARE @Id				INT = 3;
 ---------------------------------------------

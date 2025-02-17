@@ -4,6 +4,7 @@
 */
 USE Northwind
 GO
+
 IF EXISTS
 (
     SELECT name
@@ -12,6 +13,7 @@ IF EXISTS
 )
 DROP PROCEDURE usp_num_rom
 GO
+
 CREATE PROCEDURE usp_num_rom
 (
     @n INT,								--PARAMETRO DE ENTRADA
@@ -33,7 +35,7 @@ BEGIN
     SET @d = @n / 10;
     SET @u = @n % 10;
 
-    SET @strRom =
+    SET @strRom = -- variable de cadena
     (
         SELECT
             CASE @m
@@ -98,7 +100,7 @@ GO
 
 ---------------------------
 DECLARE @rom AS VARCHAR(200);
-EXECUTE usp_num_rom 1234, @rom OUTPUT
+EXECUTE usp_num_rom 3914, @rom OUTPUT
 SELECT @rom AS [EN ROMANOS]
 GO
 ---------------------------

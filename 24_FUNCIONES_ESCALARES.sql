@@ -18,6 +18,9 @@ GO
 -- Create date: 07/02/2025
 -- Description:	obtiene el nombre del empleado de forma completa por el codigo del empleado
 -- =============================================
+USE [Northwind]
+GO
+
 CREATE OR ALTER FUNCTION ufn_employees_nombre_empleado 
 (
 	-- Add the parameters for the function here

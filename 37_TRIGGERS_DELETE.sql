@@ -14,6 +14,7 @@ GO
 -- Create date: 10/02/2025
 -- Description:
 -- =============================================
+
 CREATE TRIGGER Ventas.utr_detalles_de_pedido_delete
    ON  Ventas.[Detalles de pedido]
    AFTER DELETE --LANZA UN TRIGGER DESPUES DE ELIMINAR UN ELEMENTO DE LA TABLA Ventas.[Detalles de pedido]
@@ -32,10 +33,10 @@ BEGIN
          @Id_de_pedido = [Id de pedido]
         ,@Id_de_producto = [Id de producto]
         ,@Cantidad = [Cantidad]
-    FROM DELETED --TABLA DE ELIMINACION DEL TRIGGER
+    FROM DELETED --TABLA VIRTUAL DE ELIMINACION DEL TRIGGER
 
-    IF @@ROWCOUNT = 1
-        INSERT INTO [Almacen].[Transacciones de inventario]
+    IF @@ROWCOUNT = 1   --@@ROWCOUNT es una función en SQL Server que devuelve el número de filas afectadas por la última consulta ejecutada en la sesión actual.
+	    INSERT INTO [Almacen].[Transacciones de inventario]
         (
             [Tipo de transacción]
             ,[Fecha de creación de la transacción]
@@ -61,7 +62,10 @@ BEGIN
 END
 GO
 
+
+
 -------------------------------------------------------------------------------
+--CODIGO DE PRUEBA:
 
 USE [NorthwindSQL]
 GO

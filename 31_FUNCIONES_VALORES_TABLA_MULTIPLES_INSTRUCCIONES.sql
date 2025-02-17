@@ -2,6 +2,41 @@
 Funciones con valores de tabla de múltiples instrucciones
 */
 
+USE Northwind
+GO
+
+IF EXISTS
+(
+    SELECT name
+    FROM sys.tables
+    WHERE name = 'X'
+)
+DROP TABLE[dbo].[X]
+GO
+
+USE [Northwind]
+GO
+
+SELECT [OrderID]
+      ,[CustomerID]
+      ,[EmployeeID]
+      ,[OrderDate]
+      ,[RequiredDate]
+      ,[ShippedDate]
+      ,[ShipVia]
+      ,[Freight]
+      ,[ShipName]
+      ,[ShipAddress]
+      ,[ShipCity]
+      ,[ShipRegion]
+      ,[ShipPostalCode]
+      ,[ShipCountry]
+	INTO [dbo].[X]
+  FROM [dbo].[Orders]
+ GO
+
+ /*
+ -----------------------------------------------
 CREATE TABLE [dbo].[X](
 	[OrderID] [int] IDENTITY(1,1) NOT NULL,
     [Cliente] [nvarchar](40) NULL,
@@ -20,11 +55,10 @@ CREATE TABLE [dbo].[X](
     [ShipCountry] [nvarchar](15) NULL
 
 ) ON [PRIMARY]
-
+GO
+*/
 -------------------------------------------------------------
 
-USE Northwind
-GO
 CREATE OR ALTER FUNCTION  utf_pedidos_x_cliente
 (
     @CustomerID NCHAR(5)

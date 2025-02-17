@@ -46,3 +46,50 @@ GO
 ---------------------------------
 usp_tabla_multiplicar 12
 GO
+
+---------------------------------
+usp_tabla_multiplicar -1
+GO
+
+/*
+USE Northwind
+GO
+IF EXISTS
+(
+    SELECT name
+    FROM sys.procedures
+    WHERE name = 'usp_tabla_multiplicar'
+)
+DROP PROCEDURE usp_tabla_multiplicar
+GO
+------
+
+
+create procedure usp_tabla_multiplicar
+( 
+	@numero int
+)
+as 
+begin
+	declare @contador int = 0;
+	if  @numero >=0 and @numero <= 12
+	begin
+		while @contador <= 12
+		begin
+			--print @numero * @contador
+			print concat(@numero, '*', @contador, '=', @numero*@contador)
+			set @contador += 1
+		end
+		return 0
+	end
+	else
+	begin
+		print 'Error el numero debe estar entre 0 y 12'
+		return 0
+	end
+end	
+go
+
+
+exec usp_tabla_multiplicar 13
+*/

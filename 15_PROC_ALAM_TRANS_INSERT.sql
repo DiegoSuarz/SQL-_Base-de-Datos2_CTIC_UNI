@@ -157,7 +157,7 @@ BEGIN
         RETURN 0
     END TRY
     BEGIN CATCH
-        IF @@TRANCOUNT>0
+        IF @@TRANCOUNT>0 --DEBE OCURRIR UNA TRANSACCION (NUMERO DE TRANSACCIONES)
         BEGIN
             SELECT
                 @ErrorNumber = ERROR_NUMBER(),

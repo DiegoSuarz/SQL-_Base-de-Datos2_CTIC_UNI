@@ -8,6 +8,8 @@ SELECT
 FROM [dbo].[Categories];
 ---------------------------------
 
+
+
 DECLARE @CategoryID     int
 DECLARE @CategoryName   nvarchar(15)
 DECLARE @Description    nvarchar(4000)

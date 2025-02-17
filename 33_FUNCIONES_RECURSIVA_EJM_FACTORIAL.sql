@@ -28,6 +28,7 @@ Crear la función factorial utilizando recursividad
 N! = N * (N-1)!
 
 */
+
 USE Northwind
 GO
 ------

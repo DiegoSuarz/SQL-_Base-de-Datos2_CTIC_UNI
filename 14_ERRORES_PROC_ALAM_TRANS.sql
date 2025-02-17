@@ -1,5 +1,13 @@
 --ERRORES PROCEDIMIENTOS ALMACENDOS TRANSACCIONALES
-
+--crear tabla de errores:
+IF EXISTS  -- SI EXISTE LA TABLA tbl_error_usp, ELIMINALO
+(
+    SELECT name
+    FROM sys.tables
+    WHERE name = 'tbl_error_usp'
+)
+DROP TABLE tbl_error_usp
+GO
 SELECT
     ERROR_NUMBER() AS ErrorNumber,
     ERROR_SEVERITY() AS ErrorSeverity,
@@ -17,6 +25,7 @@ SELECT *
 FROM [dbo].[tbl_error_usp]
 
 -----------------------------------------------------------------------
+/*
 USE Northwind --SELECCIONAR BASE DE DATOS
 GO
 IF EXISTS
@@ -27,6 +36,7 @@ IF EXISTS
 )
 DROP TABLE rol
 GO
+
 
 CREATE TABLE tbl_error_usp --crear tabla rol
 (
@@ -40,3 +50,4 @@ CREATE TABLE tbl_error_usp --crear tabla rol
     ErrorDate		DATETIME
 )
 GO
+*/

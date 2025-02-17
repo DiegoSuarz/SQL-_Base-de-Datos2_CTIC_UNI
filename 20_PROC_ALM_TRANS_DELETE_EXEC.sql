@@ -1,8 +1,8 @@
 USE Northwind
 GO
-TRUNCATE TABLE [dbo].[tbl_error_usp];
+--TRUNCATE TABLE [dbo].[tbl_error_usp];
 GO
-DECLARE @ProductID int = 21  --id del producto que se va a eliminar
+DECLARE @ProductID int = 11  --id del producto que se va a eliminar
 
 SELECT *
 FROM [Order Details]

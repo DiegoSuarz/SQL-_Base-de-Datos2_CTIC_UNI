@@ -66,8 +66,29 @@ como en sistemas bancarios, gestión de inventarios o e-commerce.
 
 USE Northwind
 GO
---------------------
+-------------------------------------------------------------------
+--crear tabla de errores:
+IF EXISTS  -- SI EXISTE LA TABLA tbl_error_usp, ELIMINALO
+(
+    SELECT name
+    FROM sys.tables
+    WHERE name = 'tbl_error_usp'
+)
+DROP TABLE tbl_error_usp
+GO
 
+SELECT
+   ERROR_NUMBER() AS ErrorNumber,
+   ERROR_SEVERITY() AS ErrorSeverity,
+    ERROR_STATE() AS ErrorState,
+    ERROR_PROCEDURE() AS ErrorProcedure,
+   ERROR_LINE() AS ErrorLine,
+   ERROR_MESSAGE() AS ErrorMessage,
+   GETDATE() ErrorDate
+INTO tbl_error_usp
+
+-------------------------------------------------------------------
+--CREACION DE PROCEDIMIENTO ALMACENADO
 IF EXISTS  -- SI EXISTE EL PROCEDIMIENTO ALMACENADO, ELIMINALO
 (
     SELECT name
@@ -80,27 +101,28 @@ GO
 ------------
 CREATE PROCEDURE usp_order_details_insert
 (
-    @OrderID        int,
-    @ProductID        int,
-    @UnitPrice        money,
-    @Quantity        smallint,
-    @Discount        real
+    @OrderID			int,
+    @ProductID			int,
+    @UnitPrice			money,
+    @Quantity			smallint,
+    @Discount			real
 )
 AS
 BEGIN
-    DECLARE @ErrorNumber        int
-    DECLARE @ErrorSeverity        int
-    DECLARE @ErrorState            int
-    DECLARE @ErrorProcedure        nvarchar(128)
-    DECLARE @ErrorLine            int
-    DECLARE @ErrorMessage        nvarchar(4000)
-    DECLARE @ErrorDate            datetime
+--CAPTURAR LOS ERRORES:
+    DECLARE @ErrorNumber			int
+    DECLARE @ErrorSeverity			int
+    DECLARE @ErrorState				int
+    DECLARE @ErrorProcedure			nvarchar(128)
+    DECLARE @ErrorLine				int
+    DECLARE @ErrorMessage			nvarchar(4000)
+    DECLARE @ErrorDate				datetime
 
-    DECLARE @Precio            money
-    DECLARE @Stock            smallint
-    DECLARE @Estado            bit
+    DECLARE @Precio					money
+    DECLARE @Stock					smallint
+    DECLARE @Estado					bit
 
-    DECLARE @strError       VARCHAR(2000)
+    DECLARE @strError			VARCHAR(2000)
 
     BEGIN TRANSACTION
     BEGIN TRY
@@ -153,7 +175,7 @@ BEGIN
         SET [UnitsInStock] =[UnitsInStock] - @Quantity
         WHERE [ProductID] = @ProductID;
 
-        COMMIT TRANSACTION;
+        COMMIT TRANSACTION; --si no hay problema se confirma la transaccion
         RETURN 0
     END TRY
     BEGIN CATCH
@@ -167,9 +189,15 @@ BEGIN
                 @ErrorLine = ERROR_LINE(),
                 @ErrorMessage = ERROR_MESSAGE(),
                 @ErrorDate = GETDATE()
-
-            ROLLBACK TRANSACTION;
-
+				 
+            ROLLBACK TRANSACTION; --si ocurre un problema se hace un rollback a la transaccion
+			/*
+			El comando ROLLBACK TRANSACTION en SQL Server se usa para deshacer todas 
+			las modificaciones realizadas por la transacción actual. Esto significa 
+			que si estabas ejecutando varias operaciones dentro de una transacción y 
+			algo salió mal, puedes ejecutar ROLLBACK TRANSACTION para revertir todo y
+			dejar la base de datos en su estado anterior.
+			*/
             INSERT INTO [dbo].[tbl_error_usp]
             (
                 [ErrorNumber]

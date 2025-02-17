@@ -25,10 +25,10 @@ BEGIN
     DECLARE @ErrorMessage			nvarchar(4000)
     DECLARE @ErrorDate				datetime
 
+	
+    DECLARE @Cantidad				smallint
 
-    DECLARE @Cantidad          smallint
-
-    DECLARE @strError       VARCHAR(2000)
+    DECLARE @strError				VARCHAR(2000)
 
     BEGIN TRANSACTION
     BEGIN TRY
@@ -41,7 +41,7 @@ BEGIN
             AND
                 ProductID = @ProductID;
 
-        IF @@ROWCOUNT = 0
+        IF @@ROWCOUNT = 0 --es una función en SQL Server que devuelve el número de filas afectadas por la última instrucción ejecutada. Es útil para verificar si una consulta INSERT, UPDATE, DELETE o SELECT afectó alguna fila.
         BEGIN
             SET @strError = CONCAT('La orden ', @OrderID, ' del código de producto ', @ProductID, ' no existe.');
             THROW 50005, @strError, 1

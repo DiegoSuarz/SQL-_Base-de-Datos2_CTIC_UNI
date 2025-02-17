@@ -114,12 +114,13 @@ BEGIN
         [Fecha modificada de la transacción] = @Fecha_de_asignacion_ins
         ,[Cantidad] = @Cantidad_ins
     WHERE [Id de transacción]  = @Id_de_inventario_del
-
-
 END
 GO
 
+
+
 -------------------------------------------------------------------------------
+--CODIGO DE PRUEBA
 
 USE [NorthwindSQL]
 GO

@@ -13,20 +13,20 @@ GO
 CREATE PROCEDURE usp_order_details_update
 (
     @OrderID        int,
-    @ProductID        int,
-    @UnitPrice        money,
-    @Quantity        smallint,
-    @Discount        real
+    @ProductID      int,
+    @UnitPrice		money,
+    @Quantity		smallint,
+    @Discount       real
 )
 AS
 BEGIN
     DECLARE @ErrorNumber        int
-    DECLARE @ErrorSeverity        int
-    DECLARE @ErrorState            int
-    DECLARE @ErrorProcedure        nvarchar(128)
-    DECLARE @ErrorLine            int
-    DECLARE @ErrorMessage        nvarchar(4000)
-    DECLARE @ErrorDate            datetime
+    DECLARE @ErrorSeverity      int
+    DECLARE @ErrorState         int
+    DECLARE @ErrorProcedure     nvarchar(128)
+    DECLARE @ErrorLine          int
+    DECLARE @ErrorMessage       nvarchar(4000)
+    DECLARE @ErrorDate          datetime
 
 
     DECLARE @Stock            smallint
